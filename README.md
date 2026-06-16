@@ -1,4 +1,4 @@
-#Digital Banking Platform
+# Digital Banking Platform
 
 A production-oriented Spring Boot backend application built to learn and demonstrate enterprise backend development concepts.
 
