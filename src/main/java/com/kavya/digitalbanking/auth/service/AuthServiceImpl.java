@@ -8,9 +8,11 @@ import com.kavya.digitalbanking.exception.ResourceAlreadyExistsException;
 import com.kavya.digitalbanking.auth.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -23,10 +25,14 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public RegisterResponse register(RegisterRequest request){
 
+        log.info("Registration request received for email: {}", request.getEmail());
+
         if(userRepository.existsByUsername(request.getUsername())){
+            log.warn("Registration failed. Username already exists: {}", request.getUsername());
             throw new ResourceAlreadyExistsException("Username already exists");
         }
         if(userRepository.existsByEmail(request.getEmail())){
+            log.warn("Registration failed. Email already exists: {}", request.getEmail());
             throw new ResourceAlreadyExistsException("Email already exists");
         }
         User user = User.builder()
@@ -38,6 +44,9 @@ public class AuthServiceImpl implements AuthService {
                 .build();
 
         User savedUser = userRepository.save(user);
+        log.info("User registered successfully. UserId={}, Email={}",
+                savedUser.getId(),
+                savedUser.getEmail());
 
        return RegisterResponse.builder()
                 .id(savedUser.getId())
