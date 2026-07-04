@@ -1,21 +1,21 @@
 package com.kavya.digitalbanking.auth.dto;
 
-
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class RegisterRequest {
-    @NotBlank(message = "firstname is required")
-    private String firstname;
+@NoArgsConstructor
+@AllArgsConstructor
+public class LoginRequest {
+    @NotBlank(message = "Email is required")
+    @Email(message = "Please enter a valid email")
+    private String email;
 
     @NotBlank(message = "Password is required")
     private String password;
-
-    @Email
-    @NotBlank(message = "Email is required")
-    private String email;
 }

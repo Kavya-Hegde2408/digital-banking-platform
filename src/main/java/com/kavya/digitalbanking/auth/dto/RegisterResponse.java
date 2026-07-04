@@ -10,7 +10,7 @@ import lombok.*;
 @Builder
 public class RegisterResponse {
     private Long id;
-    private String username;
+    private String firstname;
     private String email;
 
 }
