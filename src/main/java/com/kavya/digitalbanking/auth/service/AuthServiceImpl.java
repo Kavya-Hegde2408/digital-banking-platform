@@ -8,10 +8,12 @@ import com.kavya.digitalbanking.auth.entity.User;
 import com.kavya.digitalbanking.auth.enums.Role;
 import com.kavya.digitalbanking.exception.ResourceAlreadyExistsException;
 import com.kavya.digitalbanking.auth.repository.UserRepository;
+import com.kavya.digitalbanking.security.jwt.JwtService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -28,6 +30,8 @@ public class AuthServiceImpl implements AuthService {
     private final PasswordEncoder passwordEncoder;
 
     private final AuthenticationManager authenticationManager;
+
+    private final JwtService jwtService;
 
 
     @Override
@@ -77,7 +81,15 @@ public class AuthServiceImpl implements AuthService {
         log.info("User authenticated successfully: {}",
                 authentication.getName());
 
+        UserDetails userDetails =
+                (UserDetails) authentication.getPrincipal();
+
+        String jwtToken =
+                jwtService.generateToken(userDetails);
+
         return LoginResponse.builder()
+                .token(jwtToken)
+                .tokenType("Bearer")
                 .message("Login Successful")
                 .build();
     }

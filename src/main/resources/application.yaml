@@ -24,3 +24,7 @@ logging:
     org.springframework.security: INFO
     org.hibernate.SQL: DEBUG
     org.hibernate.orm.jdbc.bind: TRACE
+
+jwt:
+  secret: 6vX9jD8tQ3nP2sW7kLmA5fGhR1yZ8cBnV4xEeM9uJkL0iH7oPqRsTuYwX2zAaBbCc
+  expiration: 86400000
